@@ -12,14 +12,13 @@ Terraform v0.11.11
 + provider.aws v1.60.0
 + provider.external v1.0.0
 + provider.null v2.0.0
-
 */
 
 # provider specs
 
 provider "aws" {
-  region   = "${var.aws_region}"
-  version  = "~> 1.14"
+    region   = "${var.aws_region}"
+    version  = "~> 1.14"
 }
 
 # availability zones
@@ -29,33 +28,30 @@ data "aws_availability_zones" "all" {}
 # vpc
 
 module "sandbox_vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "1.30.0"
+    source  = "terraform-aws-modules/vpc/aws"
+    version = "1.30.0"
 
-  name = "${var.owner_name}-vpc"
+    name = "${var.owner_name}-vpc"
 
-  cidr             = "10.0.0.0/16"
-  azs              = ["${data.aws_availability_zones.all.names}"]
-  public_subnets   = ["10.0.0.0/28"]
+    cidr             = "10.0.0.0/16"
+    azs              = ["${data.aws_availability_zones.all.names}"]
+    public_subnets   = ["10.0.0.0/28"]
 
-  enable_dns_support   = true
-  enable_dns_hostnames = true
+    enable_dns_support   = true
+    enable_dns_hostnames = true
 
-  enable_s3_endpoint = true
+    enable_s3_endpoint = true
 
-  tags = {
-    Owner       = "${var.owner_name}"
-    Environment = "dev"
-    Terraform   = "true"
-  }
+    tags = {
+        Owner       = "${var.owner_name}"
+        Environment = "dev"
+        Terraform   = "true"
+    }
 }  
 
 # vpc security groups
-
 /*
-
 This is not a secure setup and is only intended for development and experimentation.
-
 */
 
 resource "aws_security_group" "ssh_sg_ext_ssh" {
@@ -81,7 +77,7 @@ resource "aws_security_group" "ssh_sg_ext_ssh" {
         Owner       = "${var.owner_name}"
         Environment = "dev"
         Terraform   = "true"
-  }
+    }
 }
 
 resource "aws_security_group" "ssh_sg_int_open" {
@@ -107,16 +103,13 @@ resource "aws_security_group" "ssh_sg_int_open" {
         Owner       = "${var.owner_name}"
         Environment = "dev"
         Terraform   = "true"
-  }
+    }
 }
 
 # configuration of a k8s master and worker instances
-
 /*
-
 If there are connectivity issues (e.g. download failures) during provisioning, hit terraform apply 
 again to provision the remaining/failed parts.
-
 */
 
 resource "aws_instance" "cluster_master" {
@@ -159,10 +152,10 @@ resource "aws_instance" "cluster_master" {
     }
 
     tags {
-      Name        = "${var.cluster_name}-master-${count.index}"
-      Owner       = "${var.owner_name}"
-      Environment = "dev"
-      Terraform   = "true"
+        Name        = "${var.cluster_name}-master-${count.index}"
+        Owner       = "${var.owner_name}"
+        Environment = "dev"
+        Terraform   = "true"
     }
 }
 
@@ -204,23 +197,20 @@ resource "aws_instance" "cluster_workers" {
     }
 
     tags {
-      Name        = "${var.cluster_name}-worker-${count.index}"
-      Owner       = "${var.owner_name}"
-      Environment = "dev"
-      Terraform   = "true"
+        Name        = "${var.cluster_name}-worker-${count.index}"
+        Owner       = "${var.owner_name}"
+        Environment = "dev"
+        Terraform   = "true"
     }
 }
 
 
 
 # join workers to the master
-
 /*
-
 If the null_resource is hanging, hit CTRL C, and check the cluster master. If worker nodes are 
 not yet joined, hit terraform apply again to complete this last step.
 This is an open Terraform issue: https://github.com/hashicorp/terraform/issues/12596
-
 */
 
 data "external" "generate-token" {
@@ -257,8 +247,8 @@ resource "null_resource" "connect-nodes" {
 # elastic IPs
 
 resource "aws_eip" "elastic_ips" {
-  vpc       = true
-  instance  = "${element(concat(aws_instance.cluster_master.*.id, aws_instance.cluster_workers.*.id), count.index)}"
-  count     = "${aws_instance.cluster_master.count + aws_instance.cluster_workers.count}"
+    vpc       = true
+    instance  = "${element(concat(aws_instance.cluster_master.*.id, aws_instance.cluster_workers.*.id), count.index)}"
+    count     = "${aws_instance.cluster_master.count + aws_instance.cluster_workers.count}"
 }
 

@@ -7,8 +7,7 @@ Terraform v0.11.11
 + provider.aws v1.60.0
 + provider.external v1.0.0
 + provider.null v2.0.0
-
- */
+*/
 
 owner_name = "OWNER_NAME"
 
