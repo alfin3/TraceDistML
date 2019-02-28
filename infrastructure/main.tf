@@ -30,7 +30,6 @@ data "aws_availability_zones" "all" {}
 module "sandbox_vpc" {
     source  = "terraform-aws-modules/vpc/aws"
     version = "1.30.0"
-
     name = "${var.owner_name}-vpc"
 
     cidr             = "10.0.0.0/16"
@@ -39,7 +38,6 @@ module "sandbox_vpc" {
 
     enable_dns_support   = true
     enable_dns_hostnames = true
-
     enable_s3_endpoint = true
 
     tags = {
@@ -128,7 +126,7 @@ resource "aws_instance" "cluster_master" {
         volume_type = "standard"
     }
 
-     connection {
+    connection {
         type = "ssh"
         user = "${var.ssh_user}"
         port = "${var.ssh_port}"
@@ -204,8 +202,6 @@ resource "aws_instance" "cluster_workers" {
     }
 }
 
-
-
 # join workers to the master
 /*
 If the null_resource is hanging, hit CTRL C, and check the cluster master. If worker nodes are 
@@ -239,8 +235,7 @@ resource "null_resource" "connect-nodes" {
     provisioner "remote-exec" {
         inline = [
             "sudo ${lookup(data.external.generate-token.result, "token_command")}"
-        ]
- 
+        ] 
     }
 }
 
