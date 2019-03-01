@@ -105,7 +105,7 @@ resource "aws_security_group" "ssh_sg_int_open" {
     }
 }
 
-# configuration of a k8s master and worker instances
+# configuration of k8s master and worker instances
 /*
 If there are connectivity issues (e.g. download failures) during provisioning, hit terraform apply 
 again to provision the remaining/failed parts.
