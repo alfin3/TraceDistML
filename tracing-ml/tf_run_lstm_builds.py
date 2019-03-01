@@ -1,6 +1,16 @@
+"""
+tf_run_lstm_builds.py
+
+Runs build experiments without training or validation.
+
+Python 3.5.2
+TensorFlow 1.1.0
+"""
+
 import os
 import time
 import sys
+import argparse
 import traceback
 import numpy as np
 import tensorflow as tf
@@ -54,7 +64,7 @@ GRAPH_FOLDER = os.path.join(RECORDS_ROOT, 'graphs', MODEL_NAME, '')
 
 #tracing
 COMPONENT_NAME = MODEL_NAME
-ACCESS_TOKEN = 'YOURTOKEN'
+DEFAULT_ACCESS_TOKEN = 'YOUR_DEFAULT_ACCESS_TOKEN'
 COLLECTOR_HOST = 'collector.lightstep.com'
 COLLECTOR_PORT = 443
 COLLECTOR_ENCRYPTION = 'tls'
@@ -77,17 +87,29 @@ def initialize():
             session.run(tf.global_variables_initializer())        
         print("Variables initialized")
 
-def lightstep_tracer():
+def commandline_args():
+    """Get commandline arguments."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--job_ix', 
+                        help='Index of the current job',  
+                        default = 'None')
+    parser.add_argument('--access_token', 
+                        help='LightStep token',  
+                        default = DEFAULT_ACCESS_TOKEN)
+    return(parser.parse_args())
+
+def lightstep_tracer(job_ix, access_token):
     """Set up a LightStep tracer."""
-    return lightstep.Tracer(component_name=COMPONENT_NAME,
-                            access_token=ACCESS_TOKEN,
+    return lightstep.Tracer(component_name=COMPONENT_NAME + '_' + job_ix,
+                            access_token=access_token,
                             collector_host=COLLECTOR_HOST,
                             collector_port=COLLECTOR_PORT,
                             collector_encryption=COLLECTOR_ENCRYPTION)
 
 def main():
     """Run graph builds without training and validation."""
-    with lightstep_tracer() as tracer:
+    args = commandline_args()
+    with lightstep_tracer(job_ix=args.job_ix, access_token=args.access_token) as tracer:
         opentracing.tracer = tracer                
         for build_ix in range(NUM_BUILDS):
             graph = tf.Graph()
