@@ -1,12 +1,13 @@
 /* 
 main.tf
 
-Main configuration file for one-step provisioning of a k8s installation.General information is 
-available at https://docs.nvidia.com/datacenter/kubernetes/kubernetes-install-guide/index.html
+Main configuration file for a one-step provisioning of a k8s cluster. A k8s cluster 
+is provisioned on AWS as a demonstration. General information is available at 
+https://docs.nvidia.com/datacenter/kubernetes/kubernetes-install-guide/index.html
 
-If worker nodes are added, new nodes will be joined with the master. To control gpu costs, 
-a more practical way is to i) drain and delete nodes via kubectl and ii) to stop and start nodes 
-via the AWS console.
+If worker nodes are added to an existing cluster, new nodes will be joined with the master. 
+To control gpu costs, however, a more practical way is to i) drain and delete nodes via kubectl 
+and ii) to stop and start nodes.
 
 Terraform v0.11.11
 + provider.aws v1.60.0
@@ -49,7 +50,7 @@ module "sandbox_vpc" {
 
 # vpc security groups
 /*
-This is not a secure setup and is only intended for development and experimentation.
+This setup is not secure and is only intended for development and experimentation purposes.
 */
 
 resource "aws_security_group" "ssh_sg_ext_ssh" {
