@@ -1,5 +1,5 @@
 """
-tf_multilayer_char_lstm.py
+tf_multilayer_char_lstm_dev.py
 
 By applying function composition, implements a multilayer character LSTM with a multilayer 
 classifier as a template for RNN construction.
@@ -23,7 +23,10 @@ class CHAR_LSTM(object):
     def __init__(self, batch_size, vocab_size, lstm_topology, 
                  num_unrollings, classifier_topology,  
                  start_learning_rate, decay_steps, 
-                 decay_rate, clip_norm, optr_tracer):
+                 decay_rate, clip_norm, 
+                 lstm_device, classifier_device, 
+                 loss_device, training_device,
+                 optr_tracer):
         self.batch_size = batch_size
         self.vocab_size = vocab_size
         self.num_unrollings = num_unrollings
@@ -33,6 +36,10 @@ class CHAR_LSTM(object):
         self.decay_steps = decay_steps
         self.decay_rate = decay_rate
         self.clip_norm = clip_norm
+        self.lstm_device = lstm_device
+        self.classifier_device = classifier_device
+        self.loss_device = loss_device
+        self.training_device = training_device
         self.optr_tracer = optr_tracer
         self.global_step = tf.Variable(0, dtype=tf.int32, 
                                        trainable=False, 
@@ -57,7 +64,7 @@ class CHAR_LSTM(object):
    
     def _create_lstm_cells(self):
         """Define LSTM cells."""
-        with tf.device('/cpu:0'):
+        with tf.device(self.lstm_device):
             with tf.name_scope('lstm'), self.optr_tracer.start_active_span('lstm'):
                 with tf.name_scope('saved_vars'), self.optr_tracer.start_active_span('saved_vars'):
                     (self.saved_train_outputs,
@@ -86,7 +93,7 @@ class CHAR_LSTM(object):
           
     def _create_classifier(self):
         """Define a neural network classifier."""
-        with tf.device('/cpu:0'):
+        with tf.device(self.classifier_device):
             with tf.name_scope('classifier'), self.optr_tracer.start_active_span('classifier'):
                 with tf.name_scope('vars'), self.optr_tracer.start_active_span('vars'):
                     classifier = classifier_fn(topology=self.classifier_topology, 
@@ -113,7 +120,7 @@ class CHAR_LSTM(object):
 
     def _create_loss(self):
         """Define a loss function."""
-        with tf.device('/cpu:0'):
+        with tf.device(self.loss_device):
             with tf.name_scope('loss'), self.optr_tracer.start_active_span('loss'):
                 self.loss = tf.reduce_mean(
                     tf.nn.softmax_cross_entropy_with_logits(
@@ -121,7 +128,7 @@ class CHAR_LSTM(object):
 
     def _create_training(self):
         """Define training ops."""
-        with tf.device('/cpu:0'):
+        with tf.device(self.training_device):
             self.learning_rate = tf.train.exponential_decay(
                 learning_rate=self.start_learning_rate, 
                 global_step=self.global_step, 

@@ -1,5 +1,5 @@
 """
-tf_run_lstm_builds.py
+tf_run_lstm_builds_dev.py
 
 Runs build experiments without training or validation.
 
@@ -15,7 +15,7 @@ import traceback
 import numpy as np
 import tensorflow as tf
 from tf_data import DATA
-from tf_multilayer_char_lstm import CHAR_LSTM
+from tf_multilayer_char_lstm_dev import CHAR_LSTM
 import opentracing
 import lightstep
 
@@ -96,6 +96,18 @@ def commandline_args():
     parser.add_argument('--access_token', 
                         help='LightStep token',  
                         default = DEFAULT_ACCESS_TOKEN)
+    parser.add_argument('--lstm_device', 
+                        help='LSTM GPU or CPU device',  
+                        default = '/cpu:0')
+    parser.add_argument('--classifier_device', 
+                        help='Classifier GPU or CPU device',  
+                        default = '/cpu:0')
+    parser.add_argument('--loss_device', 
+                        help='Loss GPU or CPU device',  
+                        default = '/cpu:0')
+    parser.add_argument('--training_device', 
+                        help='Training GPU or CPU device',  
+                        default = '/cpu:0')
     return(parser.parse_args())
 
 def lightstep_tracer(job_ix, access_token):
@@ -123,6 +135,10 @@ def main():
                                   decay_steps=DECAY_STEPS,
                                   decay_rate=DECAY_RATE,
                                   clip_norm=CLIP_NORM,
+                                  lstm_device=args.lstm_device,
+                                  classifier_device=args.classifier_device,
+                                  loss_device=args.lstm_device,
+                                  training_device=args.training_device,
                                   optr_tracer=opentracing.tracer)
                 model.build_graph()
                 initialize()
