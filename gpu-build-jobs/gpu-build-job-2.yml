@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gpu-build-tf-optr-ls-2
+spec:
+  parallelism: 1
+  template:
+    metadata:
+      name: gpu-build-tf-optr-ls
+      labels:
+        app: gpu-build-tf-optr-ls
+    spec:
+      containers:
+       - name: tf-optr-ls
+         image: tensorflow/tensorflow:1.1.0-gpu-py3
+         workingDir: /lstm-build
+         env:
+         - name: JOB_IX
+           value: "2"
+         - name: ACCESS_TOKEN
+           value: "YOUR_ACCESS_TOKEN"
+         command: ["bash"]
+         args: ["-c", "pip install opentracing && apt-get -y update && apt-get -y install python-dev && pip install lightstep && python3 -m tf_run_lstm_builds_dev --job_ix $JOB_IX --access_token $ACCESS_TOKEN --lstm_device '/gpu:0' --classifier_device '/gpu:0' --loss_device '/gpu:0' --training_device '/gpu:0' "]
+         computeResourceRequests: ["nv-gpu"]
+         volumeMounts:
+         - name: tracing-ml-code
+           mountPath: /lstm-build
+           subPath: "tracedistml/tracing-ml"
+      volumes:
+      - name: tracing-ml-code
+        gitRepo:
+          repository: https://github.com/alfin3/tracedistml.git
+          revision: master
+      restartPolicy: Never
+      computeResources:
+       - name: "nv-gpu"
+         resources:
+           limits:
+             nvidia.com/gpu: 1
+      
