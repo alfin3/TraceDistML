@@ -23,6 +23,6 @@ An example of infrastructure provisioning:
 
 ## tracedistml/tracing-ml
 
-A example of OpenTracing instrumentation to measure latencies of model construction:
+A example of OpenTracing instrumentation to measure latencies of model construction (LightStep tracer):
 
 ![latencies_explorer](https://github.com/alfin3/tracedistml/blob/master/images/latencies_explorer.jpg)
