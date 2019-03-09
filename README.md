@@ -28,4 +28,4 @@ An example of OpenTracing instrumentation to measure latencies of model construc
 
 ![latencies_explorer](https://github.com/alfin3/tracedistml/blob/master/images/latencies_explorer.jpg)
 
-see further instructions in tracedistml//tracing-ml.
+see further instructions in tracedistml/{cpu, gpu}-build-jobs.
