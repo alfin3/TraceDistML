@@ -1,8 +1,6 @@
 ## tracedistml
 
-Initial iterations of distributed approaches to machine learning are being implemented by major companies to address the need for decreasing latencies in real-time applications and processing large amounts of data, in some cases locally. 
-
-Two common considerations are: i) which parts of a computation to distribute and reduce, and ii) how to minimize communication latencies between nodes.
+The need for decreasing latencies in applications and processing large amounts of data, in some cases locally, drives the design and adoption of distributed approaches to machine learning. Two common considerations are: i) which parts of a computation to distribute and reduce, and ii) how to minimize communication latencies between nodes.
 
 **These considerations pose an optimization problem in the “infrastructure vs. model architecture” search space.** 
 
