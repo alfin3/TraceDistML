@@ -22,7 +22,7 @@ see further instructions in tracedistml/infrastructure.
 
 ## tracedistml/tracing-ml
 
-An example of OpenTracing instrumentation to measure latencies of model construction with a LightStep tracer:
+An example of OpenTracing instrumentation for measuring latencies of model construction with a LightStep tracer:
 
 ![latencies_explorer](https://github.com/alfin3/tracedistml/blob/master/images/latencies_explorer.jpg)
 
