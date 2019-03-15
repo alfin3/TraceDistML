@@ -10,7 +10,7 @@ To traverse this search space, we need to:
 
 Towards this goal, as an Insight Fellow, I developed: 
 1) a one-step provisioning of an on-premises capable k8s infrastructure to streamline infrastructure experimentation, and
-2) a higher-order functional approach to enable code simplicity and research flexibility in choosing the granularity of OpenTracing instrumentation for measuring latencies of model construction. Potential use cases of this approach include optimization of real-time systems that require output “freshness” and rapid A/B testing, such as real-time recommendation systems.
+2) a higher-order functional approach to enable code simplicity and research flexibility in choosing the granularity of OpenTracing instrumentation for measuring latencies of model construction. Potential use cases of this "fit" measure include optimization of real-time systems that require output “freshness” and rapid A/B testing, such as real-time recommendation systems.
 
 ## tracedistml/infrastructure
 
