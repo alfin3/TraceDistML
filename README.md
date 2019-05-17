@@ -5,7 +5,7 @@ The need for faster processing of large amounts of data, in some cases with a no
 **These considerations pose an optimization problem in the “infrastructure vs. model architecture” search space.** 
 
 To effectively traverse this search space, it is necessary to:
-1) quickly iterate across infrastructures and model architectures, and
+1) iterate across infrastructures and model architectures, and
 2) measure the “fit” between an infrastructure and a model architecture.
 
 Towards this goal, as an Insight Fellow, I developed: 
