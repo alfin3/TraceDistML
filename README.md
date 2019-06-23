@@ -16,15 +16,11 @@ This example set of objective functions could potentially facilitate the optimiz
 
 ## infrastructure-as-opt/infrastructure
 
-An example of infrastructure provisioning:
-
 ![infra_example](https://github.com/alfin3/tracedistml/blob/master/images/infra_image.jpg)
 
 see further instructions in infrastructure-as-opt/infrastructure.
 
 ## infrastructure-as-opt/tracing-ml
-
-An example of OpenTracing instrumentation for measuring the latencies of model construction with a LightStep tracer:
 
 ![latencies_explorer](https://github.com/alfin3/tracedistml/blob/master/images/latencies_explorer.jpg)
 
