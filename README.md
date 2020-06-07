@@ -12,8 +12,6 @@ Towards this goal, as an Insight Fellow, I developed:
 1) a one-step provisioning of an on-premises capable k8s infrastructure to streamline infrastructure iteration, and
 2) a set of modules for constructing objective functions based on latency tracing in model construction
 
-This example set of objective functions could potentially facilitate the optimization of real-time systems that require output “freshness” and rapid A/B testing, such as real-time recommendation systems.
-
 ## infrastructure-as-opt/infrastructure
 
 ![infra_example](https://github.com/alfin3/tracedistml/blob/master/images/infra_image.jpg)
